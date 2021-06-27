@@ -6,20 +6,20 @@
 
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.StdRandom;
 
-public class RandomWord {
+public class Permutation {
     public static void main(String[] args) {
-        double counter = 1;
-        String champion = "";
+        RandomizedQueue queue = new RandomizedQueue();
+        int numberOfIterations = Integer.parseInt(args[0]);
+
         while (!StdIn.isEmpty()) {
             String word = StdIn.readString();
-            boolean isChampion = StdRandom.bernoulli(1 / counter);
-            if (isChampion) {
-                champion = word;
-            }
-            counter++;
+            queue.enqueue(word);
         }
-        StdOut.println(champion);
+
+        for (int i = 0; i < numberOfIterations; i++) {
+            Object item = queue.dequeue();
+            StdOut.println(item);
+        }
     }
 }
