@@ -47,51 +47,36 @@ public class FastCollinearPoints {
             double lastSlope = Double.NEGATIVE_INFINITY;
             temp.clear();
             temp.add(origin);
-            // System.out.println("---------------------");
-            // System.out.println("Origin = " + origin);
+            // Loop through points and collect by slope
             for (int j = 0; j < slopePoints.length; j++) {
                 double thisSlope = origin.slopeTo(slopePoints[j]);
                 boolean theEndMyFriend = j == slopePoints.length - 1;
-                // System.out.println(
-                //         "Point " + slopePoints[j] + " slope to " + origin + " = " + thisSlope);
                 // Slope matches - add to set
                 if (thisSlope == lastSlope && thisSlope != Double.NEGATIVE_INFINITY) {
                     temp.add(slopePoints[j]);
-                    // System.out.println("Point added to temp, size = " + temp.size());
                 }
                 if (thisSlope != lastSlope || theEndMyFriend) {
                     if (temp.size() >= 4) {
                         Point startPoint = temp.get(0);
                         Point endPoint = temp.get(temp.size() - 1);
-                        // System.out.println(
-                        //         "Considering adding segment " + startPoint + " -> " + endPoint);
-                        // System.out.println("Temp = " + temp);
-                        // System.out.println("Endpoints = " + endPoints);
                         // Check for duplicates
                         boolean isUnique = true;
                         for (int k = 0; k < endPoints.size(); k++) {
                             Point otherStartPoint = startPoints.get(k);
                             Point otherEndPoint = endPoints.get(k);
                             double otherSlope = slopes.get(k);
-
+                            // check if segment shares an existing start or endpoint and slope
                             if ((otherStartPoint.equals(startPoint) ||
                                     otherEndPoint.equals(startPoint) ||
                                     otherStartPoint.equals(endPoint) ||
                                     otherEndPoint.equals(endPoint)) &&
                                     Math.abs(otherSlope) == Math.abs(lastSlope)) {
-                                // System.out.println(
-                                //         ">>> Rejecting segment as not unique "
-                                //                 + new LineSegment(
-                                //                 startPoint, endPoint));
                                 isUnique = false;
                                 break;
-
                             }
                         }
                         if (isUnique) {
                             segments.add(new LineSegment(startPoint, endPoint));
-                            // System.out.println(
-                            //         "*** Added segment " + new LineSegment(startPoint, endPoint));
                             startPoints.add(startPoint);
                             endPoints.add(endPoint);
                             slopes.add(lastSlope);
